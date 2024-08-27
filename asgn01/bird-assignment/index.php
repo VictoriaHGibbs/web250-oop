@@ -23,6 +23,7 @@ class Bird
 
   function birdInfo()
   {
+    echo "<hr>";
     echo "Common Name: " . $this->commonName . "<br>";
     echo "Food: " . $this->food . "<br>";
     echo "Nest Location: " . $this->nestPlacement . "<br>";
@@ -46,6 +47,7 @@ $bird2->conservationLevel = 'Low';
 $bird1->birdInfo();
 $bird1->song("Drink your tea");
 $bird1->canFly(1);
+
 
 $bird2->birdInfo();
 $bird2->song("What What");
