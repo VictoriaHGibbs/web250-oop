@@ -1,34 +1,39 @@
-<!--
--+Choose own category
--+Pick topic that interests you
--+Look for subcategories with similarities and shared attributes.
--+Map inheritance on paper, list properties and methods.
--+Once on paper, you can start to code and define your classes. 
--+Inherit, extend, and override properties and methods. 
--Create instances to test.
--->
+
 <?php
 
 class Animal
 {
 
-  var $name;
-  var $type;
-  var $legs = 4;
-  var $outerCovering;
-  var $environment;
+  public $name;
+  private $type;
+  protected $legs = 4; // when private, everyone had 4 legs lol. 
+  protected $outerCovering;
+  public $environment;
 
-  function aboutAnimal()
+  public function aboutAnimal()
   {
-    echo $this->name . " is a " . $this->type . ". They have " . $this->legs . " legs and are covered in " . $this->outerCovering . ". They live in " . $this->environment . ". ";
+    echo $this->name . " is a " . $this->type . ". They have " . $this->legs . " legs and have " . $this->outerCovering . ". They live in " . $this->environment . ". ";
+  }
+
+  // set $type 
+  public function setType($newType)
+  {
+    $this->type = $newType;
+  }
+
+
+  // get $type
+  public function getType()
+  {
+    return $this->type;
   }
 }
 
 class Mammal extends Animal
 {
-  var $outerCovering = 'hair';
+  protected $outerCovering = 'hair';
 
-  function aboutAnimal()
+  public function aboutAnimal()
   {
     return parent::aboutAnimal() . " Most mammals give live birth. <br>";
   }
@@ -36,17 +41,17 @@ class Mammal extends Animal
 
 class AquaticMammal extends Mammal
 {
-  var $legs = 0;
+  public $legs = 0;
 }
 
 class Bird extends Animal
 {
-  var $outerCovering = 'feathers';
-  var $legs = 2;
-  var $beakShape;
-  var $food;
+  protected $outerCovering = 'feathers';
+  public $legs = 2;
+  public $beakShape;
+  public $food;
 
-  function aboutAnimal()
+  public function aboutAnimal()
   {
     return parent::aboutAnimal() . $this->name . " has a " . $this->beakShape . " shaped beak it uses to eat " . $this->food . "<br>";
   }
@@ -54,9 +59,9 @@ class Bird extends Animal
 
 class Reptile extends Animal
 {
-  var $outerCovering = 'scales';
+  protected $outerCovering = 'scales';
 
-  function aboutAnimal()
+  public function aboutAnimal()
   {
     return parent::aboutAnimal() . " Like most reptiles, " . $this->name . " prefers to shop at Costco over Sam's Club. <br>";
   }
@@ -64,10 +69,10 @@ class Reptile extends Animal
 
 class Snake extends Reptile
 {
-  var $legs = 0;
-  var $food;
+  public $legs = 0;
+  public $food;
 
-  function aboutAnimal()
+  public function aboutAnimal()
   {
     return parent::aboutAnimal() . $this->name . " likes to eat " . $this->food . ". <br>";
   }
@@ -75,10 +80,10 @@ class Snake extends Reptile
 
 class Amphibian extends Animal
 {
-  var $outerCovering = 'scales';
-  var $environment = 'water';
+  protected $outerCovering = 'scales';
+  public $environment = 'water';
 
-  function aboutAnimal()
+  public function aboutAnimal()
   {
     return parent::aboutAnimal() . " Amphibians need to stay near or in water. <br>";
   }
@@ -86,10 +91,10 @@ class Amphibian extends Animal
 
 class Fish extends Animal
 {
-  var $outerCovering = 'scales';
-  var $legs = 0;
+  protected $outerCovering = 'scales';
+  public $legs = 0;
 
-  function aboutAnimal()
+  public function aboutAnimal()
   {
     return parent::aboutAnimal() . " Fish will try to scam you, do not fall for their drop-shipping schemes. <br>";
   }
@@ -99,21 +104,25 @@ class Fish extends Animal
 
 $animal1 = new AquaticMammal;
 $animal1->name = 'Bobbert';
-$animal1->type = 'dolphin';
+// $animal1->type = 'dolphin';
+$animal1->setType('boat booper');
 $animal1->environment = 'water';
+echo $animal1->getType() . "<br>";
 
 $animal2 = new Bird;
 $animal2->name = 'Kaeightie';
-$animal2->type = 'Black cap chickadee';
+// $animal2->type = 'Black cap chickadee';
+$animal2->setType('demon flapper');
 $animal2->environment = 'forest';
 $animal2->beakShape = 'pointy';
 $animal2->food = 'seeds';
 
 $animal3 = new Snake;
 $animal3->name = 'Jerry';
-$animal3->type = 'black snake';
+// $animal3->type = 'black snake';
+$animal3->setType('nope-rope');
 $animal3->environment = 'forests, old buildings, and closets';
-$animal3->food = 'other snakes';
+$animal3->food = 'other nope-ropes';
 
 echo $animal1->aboutAnimal() . '<br>';
 echo $animal2->aboutAnimal() . '<br>';
