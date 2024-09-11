@@ -11,12 +11,14 @@ class Bird
 
   public static $eggNum = 0;
 
-  public $instanceCount;
+  public static $instanceCount = 0;
 
   public static function create()
   {
     $class = get_called_class();
     $birdClass = new $class;
+
+    self::$instanceCount++;
     return $birdClass;
   }
 
