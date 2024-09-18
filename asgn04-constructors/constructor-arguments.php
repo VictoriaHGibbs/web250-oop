@@ -14,6 +14,6 @@ class Bird
   }
 }
 
-$flycatcher = new Bird(['commonName' => 'Acadian Flycatcher', 'latinName' => 'Turdus migratorius']);
+$flycatcher = new Bird(['commonName' => 'Acadian Flycatcher', 'latinName' => 'Empidonax virescens']);
 
-$towhee = new Bird(['commonName' => 'Eastern Towhee', 'latinName' => 'Pipilo erythrophthalmus']);
+$towhee = new Bird(['commonName' => 'Carolina Wren', 'latinName' => 'Thryothorus ludovicianus']);
