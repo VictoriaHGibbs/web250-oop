@@ -1,23 +1,27 @@
 <?php
 
-class Bicycle {
+class Bicycle
+{
 
   // ----- START OF ACTIVE RECORD CODE ------
   static protected $database;
+  static protected $db_columns = ['id', 'brand', 'model', 'year', 'category', 'color', 'gender', 'price', 'weight_kg', 'condition_id', 'description'];
 
-  static public function set_database($database) {
+  static public function set_database($database)
+  {
     self::$database = $database;
   }
 
-  static public function find_by_sql($sql) {
+  static public function find_by_sql($sql)
+  {
     $result = self::$database->query($sql);
-    if(!$result) {
+    if (!$result) {
       exit("Database query failed.");
     }
 
     // results into objects
     $object_array = [];
-    while($record = $result->fetch_assoc()) {
+    while ($record = $result->fetch_assoc()) {
       $object_array[] = self::instantiate($record);
     }
 
@@ -26,34 +30,108 @@ class Bicycle {
     return $object_array;
   }
 
-  static public function find_all() {
+  static public function find_all()
+  {
     $sql = "SELECT * FROM bicycles";
     return self::find_by_sql($sql);
   }
 
-  static public function find_by_id($id) {
+  static public function find_by_id($id)
+  {
     $sql = "SELECT * FROM bicycles ";
     $sql .= "WHERE id='" . self::$database->escape_string($id) . "'";
     $obj_array = self::find_by_sql($sql);
-    if(!empty($obj_array)) {
+    if (!empty($obj_array)) {
       return array_shift($obj_array);
     } else {
       return false;
     }
   }
 
-  static protected function instantiate($record) {
+  static protected function instantiate($record)
+  {
     $object = new self;
     // Could manually assign values to properties
     // but automatically assignment is easier and re-usable
-    foreach($record as $property => $value) {
-      if(property_exists($object, $property)) {
+    foreach ($record as $property => $value) {
+      if (property_exists($object, $property)) {
         $object->$property = $value;
       }
     }
     return $object;
   }
 
+  public function create()
+  {
+    $attributes = $this->sanitized_attributes();
+    $sql = "INSERT INTO bicycles (";
+    $sql .= join(', ', array_keys($attributes));
+    $sql .= ") VALUES ('";
+    $sql .= join("', '", array_values($attributes));
+    $sql .= "')";
+    $result = self::$database->query($sql);
+    if ($result) {
+      $this->id = self::$database->insert_id;
+    }
+    return $result;
+  }
+
+  public function update()
+  {
+    $attributes = $this->sanitized_attributes();
+    $attribute_pairs = [];
+    foreach ($attributes as $key => $value) {
+      $attribute_pairs[] = "{$key}='{$value}'";
+    }
+
+    $sql = "UPDATE bicycles SET ";
+    $sql .= join(', ', $attribute_pairs);
+    $sql .= " WHERE id='" . self::$database->escape_string($this->id) . "' ";
+    $sql .= "LIMIT 1";
+    $result = self::$database->query($sql);
+    return $result;
+  }
+
+  public function save()
+  {
+    // A new record will not have an ID yet
+    if (isset($this->id)) {
+      return $this->update();
+    } else {
+      return $this->create();
+    }
+  }
+
+  public function merge_attributes($args = [])
+  {
+    foreach ($args as $key => $value) {
+      if (property_exists($this, $key) && !is_null($value)) {
+        $this->$key = $value;
+      }
+    }
+  }
+
+  // Properties which have database columns, excluding ID
+  public function attributes()
+  {
+    $attributes = [];
+    foreach (self::$db_columns as $column) {
+      if ($column == 'id') {
+        continue;
+      }
+      $attributes[$column] = $this->$column;
+    }
+    return $attributes;
+  }
+
+  protected function sanitized_attributes()
+  {
+    $sanitized = [];
+    foreach ($this->attributes() as $key => $value) {
+      $sanitized[$key] = self::$database->escape_string($value);
+    }
+    return $sanitized;
+  }
   // ----- END OF ACTIVE RECORD CODE ------
 
   public $id;
@@ -65,8 +143,8 @@ class Bicycle {
   public $description;
   public $gender;
   public $price;
-  protected $weight_kg;
-  protected $condition_id;
+  public $weight_kg;
+  public $condition_id;
 
   public const CATEGORIES = ['Road', 'Mountain', 'Hybrid', 'Cruiser', 'City', 'BMX'];
 
@@ -80,7 +158,8 @@ class Bicycle {
     5 => 'Like New'
   ];
 
-  public function __construct($args=[]) {
+  public function __construct($args = [])
+  {
     //$this->brand = isset($args['brand']) ? $args['brand'] : '';
     $this->brand = $args['brand'] ?? '';
     $this->model = $args['model'] ?? '';
@@ -101,34 +180,37 @@ class Bicycle {
     // }
   }
 
-  public function name() {
+  public function name()
+  {
     return "{$this->brand} {$this->model} {$this->year}";
   }
-  public function weight_kg() {
+  public function weight_kg()
+  {
     return number_format($this->weight_kg, 2) . ' kg';
   }
 
-  public function set_weight_kg($value) {
+  public function set_weight_kg($value)
+  {
     $this->weight_kg = floatval($value);
   }
 
-  public function weight_lbs() {
+  public function weight_lbs()
+  {
     $weight_lbs = floatval($this->weight_kg) * 2.2046226218;
     return number_format($weight_lbs, 2) . ' lbs';
   }
 
-  public function set_weight_lbs($value) {
+  public function set_weight_lbs($value)
+  {
     $this->weight_kg = floatval($value) / 2.2046226218;
   }
 
-  public function condition() {
-    if($this->condition_id > 0) {
+  public function condition()
+  {
+    if ($this->condition_id > 0) {
       return self::CONDITION_OPTIONS[$this->condition_id];
     } else {
       return "Unknown";
     }
   }
-
 }
-
-?>
