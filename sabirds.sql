@@ -66,9 +66,10 @@ INSERT INTO `bird_images` (`id`, `bird_id_fk`, `image_name`) VALUES
 --
 -- Table structure for table `users`
 --
+USE victori1_bird;
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `id` int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
@@ -77,6 +78,7 @@ CREATE TABLE `users` (
   `hashed_password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE users ADD INDEX index_username (username);
 --
 -- Dumping data for table `users`
 --
