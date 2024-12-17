@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../private/initialize.php');
+require_once('../../../private/initialize.php');
 require_login();
 
 if (is_post_request()) {
@@ -13,8 +13,8 @@ if (is_post_request()) {
 
   if ($result === true) {
     $new_id = $member->id;
-    $_SESSION['message'] = 'The member was created successfully.';
-    redirect_to(url_for('members/show.php?id=' . $new_id));
+    $session->message('The member was created successfully.');
+    redirect_to(url_for('/active-record/members/show.php?id=' . $new_id));
   } else {
     // show errors
   }
@@ -30,7 +30,7 @@ if (is_post_request()) {
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/members/index.php'); ?>">&laquo; Back to List</a>
+  <a class="back-link" href="<?php echo url_for('/active-record/members/index.php'); ?>">&laquo; Back to List</a>
 
   <div class="bicycle new">
     <h1>Create Member</h1>
@@ -38,7 +38,7 @@ if (is_post_request()) {
     <?php echo display_errors($member->errors);
     ?>
 
-    <form action="<?php echo url_for('/members/new.php'); ?>" method="post">
+    <form action="<?php echo url_for('/active-record/members/new.php'); ?>" method="post">
 
       <?php include('form_fields.php'); ?>
 
