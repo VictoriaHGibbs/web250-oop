@@ -35,3 +35,14 @@ if (!isset($member)) {
   <dt>Confirm Password</dt>
   <dd><input type="password" name="member[confirm_password]" value="" /></dd>
 </dl>
+
+<?php if ($session->is_admin_logged_in()): ?>
+  <fieldset>
+    <legend>User Level</legend> <!-- used radio buttons to act as a lazy validation -->
+    <input type="radio" id="m" name="member[user_level]" value="m">
+    <label for="m">Member</label>
+
+    <input type="radio" id="a" name="member[user_level]" value="a">
+    <label for="a">Admin</label>
+  </fieldset>
+<?php endif; ?>

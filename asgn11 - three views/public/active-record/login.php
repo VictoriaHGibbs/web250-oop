@@ -21,11 +21,11 @@ if (is_post_request()) {
   // if there were no errors, try to login
   if (empty($errors)) {
     $member = Member::find_by_username($username);
-    // test if admin found and password is correct
+    // test if user found and password is correct
     if ($member != false && $member->verify_password($password)) {
-      // Mark admin as logged in
+      // Mark user as logged in
       $session->login($member);
-      redirect_to(url_for('/members/index.php'));
+      redirect_to(url_for('/active-record/index.php'));
     } else {
       // username not found or password does not match
       $errors[] = "Log in was unsuccessful.";

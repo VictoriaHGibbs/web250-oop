@@ -17,7 +17,7 @@ $bird = Bird::find_by_id($id);
 
   <a class="back-link" href="<?php echo url_for('/active-record/birds/index.php'); ?>">&laquo; Back to List</a>
 
-  <div class="bicycle show">
+  <div>
 
     <h1>Bird: <?php echo h($bird->name()); ?></h1>
 

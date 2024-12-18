@@ -5,8 +5,9 @@ class Session
   private $member_id;
   public $username;
   private $last_login;
+  public $user_level;
 
-  public const MAX_LOGIN_AGE = 60 * 60 * 24; // 1 day
+  public const MAX_LOGIN_AGE = 60 * 60 * 24; // 1 day in seconds
 
   public function __construct()
   {
@@ -22,6 +23,7 @@ class Session
       $this->member_id = $_SESSION['member_id'] = $member->id;
       $this->username = $_SESSION['username'] = $member->username;
       $this->last_login = $_SESSION['last_login'] = time();
+      $this->user_level = $_SESSION['user_level'] = $member->user_level;
     }
     return true;
   }
@@ -32,14 +34,21 @@ class Session
     return isset($this->member_id) && $this->last_login_is_recent();
   }
 
+  public function is_admin_logged_in()
+  {
+    return $this->is_logged_in() && $this->user_level == 'a';
+  }
+
   public function logout()
   {
     unset($_SESSION['member_id']);
     unset($_SESSION['username']);
     unset($_SESSION['last_login']);
+    unset($_SESSION['user_level']);
     unset($this->member_id);
     unset($this->username);
     unset($this->last_login);
+    unset($this->user_level);
     return true;
   }
 
@@ -49,6 +58,7 @@ class Session
       $this->member_id = $_SESSION['member_id'];
       $this->username = $_SESSION['username'];
       $this->last_login = $_SESSION['last_login'];
+      $this->user_level = $_SESSION['user_level'];
     }
   }
 

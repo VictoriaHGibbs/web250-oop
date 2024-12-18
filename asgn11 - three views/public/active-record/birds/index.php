@@ -14,15 +14,15 @@ $birds = Bird::find_all();
 ?>
 
 <div id="content">
-  <div class="bicycles listing">
+  <div>
     <h1>Birds</h1>
 
     <div class="actions">
       <a class="action" href="<?php echo url_for('/active-record/birds/new.php'); ?>">Add Bird</a>
     </div>
 
-    <table class="list">
-      <tr>
+    <table border=1>
+      <tr style="font-size: 20px; background-color: lightyellow;">
         <th>ID</th>
         <th>Common Name</th>
         <th>Habitat</th>
@@ -30,8 +30,13 @@ $birds = Bird::find_all();
         <th>Conservation ID</th>
         <th>Backyard Tips</th>
         <th>&nbsp;</th>
-        <th>&nbsp;</th>
-        <th>&nbsp;</th>
+
+        <?php if ($session->is_logged_in()) { ?>
+          <th>&nbsp;</th>
+          <th>&nbsp;</th>
+        <?php } ?>
+
+
       </tr>
 
       <?php foreach ($birds as $bird) { ?>

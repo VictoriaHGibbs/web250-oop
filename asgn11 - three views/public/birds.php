@@ -7,9 +7,10 @@ include(SHARED_PATH . '/public_header.php');
 <h2>Bird inventory</h2>
 <p>This is a short list -- start your birding!</p>
 
+<li><a href="<?php echo url_for('/active-record/signup.php'); ?>">Sign up and become a member today!</a></li>
 
-<table>
-  <tr>
+<table border=1>
+  <tr style="font-size: 20px; background-color: lightblue;">
     <th>Name</th>
     <th>Habitat</th>
     <th>Food</th>
